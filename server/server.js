@@ -38,67 +38,64 @@ import { checkMaintenance } from "./middlewares/authRole.js";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+const isVercel = Boolean(process.env.VERCEL || process.env.VERCEL_ENV);
 
-// 🟢 Create HTTP Server and bind Socket.io to it
+// 🟢 Create HTTP Server and bind Socket.io to it only for local / long-running mode
 const httpServer = createServer(app);
 
-// 🟢 FIX: Added your Vercel frontend URL to the allowed origins!
 const allowedOrigins = [
-  "http://localhost:5173", 
-  "https://mandvi-cart.vercel.app", 
-  process.env.FRONTEND_URL
+  process.env.CLIENT_URL,
+  process.env.FRONTEND_URL,
+  "http://localhost:5173"
 ].filter(Boolean);
 
-const io = new Server(httpServer, {
-  cors: {
-    origin: allowedOrigins,
-    credentials: true,
-    methods: ["GET", "POST"]
-  }
-});
+const io = isVercel
+  ? null
+  : new Server(httpServer, {
+      cors: {
+        origin: allowedOrigins,
+        credentials: true,
+        methods: ["GET", "POST"]
+      }
+    });
 
-// 🟢 Attach IO to app so controllers can trigger real-time Admin events
-app.set("io", io);
-
-// ==========================================
-// 🚀 REAL-TIME TRACKING ENGINE (SOCKET.IO)
-// ==========================================
-io.on("connection", (socket) => {
+if (io) {
+  io.on("connection", (socket) => {
     console.log(`🔌 Live Connection Established: ${socket.id}`);
 
-    // 1. Both Customer & Rider join a private "Order Room"
     socket.on("join_order", (orderId) => {
-        socket.join(orderId);
-        console.log(`📦 User joined Tracking Room: ${orderId}`);
+      socket.join(orderId);
+      console.log(`📦 User joined Tracking Room: ${orderId}`);
     });
 
-    // 2. Rider broadcasts their live GPS coordinates
     socket.on("rider_location_update", (data) => {
-        socket.to(data.orderId).emit("live_location", data);
+      socket.to(data.orderId).emit("live_location", data);
     });
 
-    // 3. Register global user for generic notifications (Seller/User)
     socket.on("register_user", (userId) => {
-        if (userId) {
-            socket.join(userId);
-            console.log(`👤 User joined Global Notification Room: ${userId}`);
-        }
+      if (userId) {
+        socket.join(userId);
+        console.log(`👤 User joined Global Notification Room: ${userId}`);
+      }
     });
 
-    // 4. Broker Rider Arrivals to the destination party
     socket.on("rider_arrived", ({ orderId, targetUserId, type }) => {
-        console.log(`🎯 Rider Arrived! Notifying ${type}: ${targetUserId} for order ${orderId}`);
-        socket.to(targetUserId).emit("push_notification", 
-            type === "pickup" 
-                ? `🚲 Your rider has arrived at your store for order #${orderId.slice(-6).toUpperCase()}`
-                : `📦 Your delivery has arrived! Your rider is outside.`
-        );
+      console.log(`🎯 Rider Arrived! Notifying ${type}: ${targetUserId} for order ${orderId}`);
+      socket.to(targetUserId).emit(
+        "push_notification",
+        type === "pickup"
+          ? `🚲 Your rider has arrived at your store for order #${orderId.slice(-6).toUpperCase()}`
+          : `📦 Your delivery has arrived! Your rider is outside.`
+      );
     });
 
     socket.on("disconnect", () => {
-        console.log(`🔌 Connection Dropped: ${socket.id}`);
+      console.log(`🔌 Connection Dropped: ${socket.id}`);
     });
-});
+  });
+}
+
+app.set("io", io);
 
 const initializeServer = async () => {
   try {
@@ -159,10 +156,12 @@ const initializeServer = async () => {
       });
     });
 
-    // Listen using the HTTP server, NOT the Express app, so Sockets work!
-    httpServer.listen(PORT, () => {
-      console.log(`🚀 Real-Time Server running on port ${PORT}`);
-    });
+    if (!isVercel) {
+      // Listen only in local or full server mode
+      httpServer.listen(PORT, () => {
+        console.log(`🚀 Real-Time Server running on port ${PORT}`);
+      });
+    }
 
   } catch (error) {
     console.error(`❌ FATAL: Server Initialization Failed: ${error.message}`);
@@ -171,3 +170,8 @@ const initializeServer = async () => {
 };
 
 initializeServer();
+
+export default app;
+export const config = {
+  runtime: "nodejs22.x"
+};
