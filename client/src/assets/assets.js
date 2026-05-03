@@ -71,6 +71,7 @@ import scanner from "./scanner.jpeg";
 import rider from "./rider.png";
 import home from "./home.png";
 import shop from "./shop.png";
+import leaf_icon from "./leaf_icon.svg";
 
 export const assets = {
   fevicon,
