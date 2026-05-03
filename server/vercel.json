@@ -4,7 +4,9 @@
     {
       "src": "server.js",
       "use": "@vercel/node",
-      "config": { "runtime": "nodejs18.x" }
+      "config": { 
+        "runtime": "nodejs" 
+      }
     }
   ],
   "routes": [
