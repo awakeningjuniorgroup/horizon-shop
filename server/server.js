@@ -12,7 +12,6 @@ import { Server } from "socket.io";
 import helmet from "helmet";
 import compression from "compression";
 import morgan from "morgan";
-// 🟢 REMOVED: express-rate-limit has been removed to allow unlimited requests
 
 // Import Configs
 import connectCloudinary from "./configs/cloudinary.js"; 
@@ -50,7 +49,7 @@ const allowedOrigins = [
   process.env.FRONTEND_URL
 ].filter(Boolean);
 
-// 🟢 FIX: Improved CORS configuration with preflight support
+// 🟢 FIX: CORS configuration with ALL required headers
 const corsOptions = {
   origin: function(origin, callback) {
     // Allow requests with no origin (like mobile apps, Postman, etc.)
@@ -66,8 +65,18 @@ const corsOptions = {
   },
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
-  allowedHeaders: ["Content-Type", "Authorization", "Cookie", "X-Requested-With"],
-  exposedHeaders: ["Set-Cookie"],
+  // 🔥 CRITICAL FIX: Added 'token' header to allowed headers
+  allowedHeaders: [
+    "Content-Type", 
+    "Authorization", 
+    "Cookie", 
+    "X-Requested-With",
+    "token",  // ✅ THIS WAS MISSING - FIXES THE CORS ERROR
+    "Token",  // Also handle capitalized version
+    "x-token", // Alternative naming
+    "X-Token"
+  ],
+  exposedHeaders: ["Set-Cookie", "token", "Token"],
   optionsSuccessStatus: 200
 };
 
@@ -132,7 +141,8 @@ const initializeServer = async () => {
 
     // Security & Logging Middlewares
     app.use(helmet({ 
-      crossOriginResourcePolicy: false // Important for CORS
+      crossOriginResourcePolicy: false,
+      crossOriginEmbedderPolicy: false // Important for CORS
     })); 
     app.use(compression()); 
     
@@ -140,10 +150,10 @@ const initializeServer = async () => {
         app.use(morgan('dev')); 
     }
 
-    // 🟢 FIX: Apply CORS middleware BEFORE other routes
+    // 🟢 Apply CORS middleware BEFORE any route
     app.use(cors(corsOptions));
     
-    // Handle preflight requests explicitly
+    // Handle preflight requests explicitly for all routes
     app.options('*', cors(corsOptions));
 
     // Webhook route (must be before express.json for raw body)
@@ -153,6 +163,14 @@ const initializeServer = async () => {
     app.use(express.json({ limit: '2mb' })); 
     app.use(express.urlencoded({ extended: true, limit: '2mb' }));
     app.use(cookieParser());
+
+    // Middleware to log headers for debugging (optional)
+    app.use((req, res, next) => {
+      if (req.headers.token) {
+        console.log(`🔑 Token header received for ${req.method} ${req.path}`);
+      }
+      next();
+    });
 
     // Maintenance check middleware
     app.use(checkMaintenance);
@@ -183,7 +201,8 @@ const initializeServer = async () => {
         success: true, 
         message: "CORS is working!",
         origin: req.headers.origin,
-        allowedOrigins: allowedOrigins
+        allowedOrigins: allowedOrigins,
+        headersReceived: Object.keys(req.headers)
       });
     });
 
@@ -209,6 +228,7 @@ const initializeServer = async () => {
     httpServer.listen(PORT, () => {
       console.log(`🚀 Real-Time Server running on port ${PORT}`);
       console.log(`📡 CORS enabled for origins:`, allowedOrigins);
+      console.log(`📋 Allowed headers:`, corsOptions.allowedHeaders);
     });
 
   } catch (error) {
