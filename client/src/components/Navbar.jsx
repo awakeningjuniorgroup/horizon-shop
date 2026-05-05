@@ -755,6 +755,25 @@ const Navbar = () => {
                   </>
                 )}
               </NavLink>
+              <NavLink
+                onClick={() => setOpen(false)}
+                to="/about"
+                className={({ isActive }) =>
+                  `py-3.5 px-4 rounded-xl font-bold flex items-center gap-3 transition-colors ${isActive ? "bg-emerald-50 text-emerald-700" : "hover:bg-slate-50 text-slate-600"}`
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    <Home
+                      size={18}
+                      className={
+                        isActive ? "text-emerald-500" : "text-slate-400"
+                      }
+                    />{" "}
+                    About us
+                  </>
+                )}
+              </NavLink>
 
               {/* 🟢 MOBILE CART LINK (Needed since hover is hidden on mobile) */}
               {!isStaff && (

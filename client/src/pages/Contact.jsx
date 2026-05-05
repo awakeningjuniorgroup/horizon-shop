@@ -211,7 +211,7 @@ const Contact = () => {
               <div>
                 <h3 className="font-bold text-slate-900 text-lg">Email</h3>
                 <p className="text-sm text-slate-500 mt-1">
-                  support@kuakumarket.com
+                  support@horizonbusiness.com
                 </p>
                 {/* <p className="text-xs text-slate-400 font-medium">
                   We reply within 24hrs
