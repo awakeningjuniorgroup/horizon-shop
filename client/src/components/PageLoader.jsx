@@ -72,7 +72,7 @@ const PageLoader = () => {
               ></span>
             </div>
             <span className="text-emerald-700/70 text-[10px] font-black uppercase tracking-widest animate-pulse text-center block">
-              Loading
+              Chargement
             </span>
           </div>
         </motion.div>
