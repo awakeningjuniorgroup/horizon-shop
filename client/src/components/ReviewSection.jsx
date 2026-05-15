@@ -51,21 +51,22 @@ const ReviewSection = ({ productId, reviews = [] }) => {
                     onClick={() => setActiveTab('reviews')}
                     className={`px-6 py-3 font-bold text-sm ${activeTab === 'reviews' ? 'border-b-2 border-[#4A76AC]  text-[#4A76AC]' : 'text-gray-500'}`}
                 >
-                    Reviews ({reviews.length})
+                    Appréciations ({reviews.length})
                 </button>
             </div>
 
             <div className="py-6 text-sm text-gray-600 leading-relaxed">
                 {activeTab === 'desc' ? (
                     <p>
-                        Experience the freshest quality with GreenCart. Our products are sourced directly from trusted farmers and suppliers to ensure you get the best nutrition and taste. Carefully packed and delivered with hygiene as our top priority.
+                        Horizon shop offre une gamme de produits de qualité, soigneusement sélectionnés pour répondre à vos besoins quotidiens. 
+                        Notre engagement envers la satisfaction du client nous distingue, faisant de nous votre destination de confiance pour des achats en ligne pratiques et fiables.
                     </p>
                 ) : (
                     <div className="flex flex-col gap-6">
                         
                         {/* 1. Review Form */}
                         <div className="bg-gray-50 p-6 rounded-xl mb-4">
-                            <h3 className="font-bold text-gray-800 mb-3">Write a Review</h3>
+                            <h3 className="font-bold text-gray-800 mb-3">Donner votre appréciations</h3>
                             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                                 <div className="flex gap-1">
                                     {[1, 2, 3, 4, 5].map((star) => (
@@ -86,7 +87,7 @@ const ReviewSection = ({ productId, reviews = [] }) => {
                                     required
                                 ></textarea>
                                 <button disabled={isSubmitting} className="self-end bg-[#4A76AC] text-white px-6 py-2 rounded-lg font-bold hover:bg-[#3d618c] flex items-center gap-2">
-                                    {isSubmitting ? "Posting..." : <><Send size={16} /> Post Review</>}
+                                    {isSubmitting ? "Posting..." : <><Send size={16} />posté</>}
                                 </button>
                             </form>
                         </div>
@@ -113,7 +114,7 @@ const ReviewSection = ({ productId, reviews = [] }) => {
                                 <p className="text-gray-600 pl-10">{review.comment}</p>
                             </div>
                         )) : (
-                            <p className="text-center text-gray-400 py-4">No reviews yet. Be the first!</p>
+                            <p className="text-center text-gray-400 py-4">Pas d'appréciations. Soyez le premier à donner votre avis!</p>
                         )}
                     </div>
                 )}

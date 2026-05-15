@@ -232,7 +232,7 @@ const Product = () => {
                 {/* Related */}
                 {relatedProducts.length > 0 && (
                     <div className="mt-20">
-                        <h2 className="text-3xl font-black text-gray-900 mb-8">Vous pouvew aussi aimer</h2>
+                        <h2 className="text-3xl font-black text-gray-900 mb-8">Vous pouvez aussi aimer</h2>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                             {relatedProducts.map((item, index) => (
                                 <ProductCard key={index} product={item} />
