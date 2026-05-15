@@ -1,7 +1,7 @@
 import "dotenv/config";
 import mongoose from 'mongoose';
 import User from './models/User.js';
-import { clerkClient } from '@clerk/clerk-sdk-node';
+import { clerhorizon shopient } from '@clerk/clerk-sdk-node';
 import bcrypt from 'bcryptjs';
 
 const createSuperAdminWithClerk = async () => {
@@ -28,7 +28,7 @@ const createSuperAdminWithClerk = async () => {
         
         try {
           // Try to find in Clerk
-          const clerkUsers = await clerkClient.users.getUserList({ 
+          const clerkUsers = await clerhorizon shopient.users.getUserList({ 
             emailAddress: ['awakeningjuniorgroup@gmail.com'] 
           });
           
@@ -52,7 +52,7 @@ const createSuperAdminWithClerk = async () => {
     let clerkUserId = '';
     
     try {
-      const clerkUser = await clerkClient.users.createUser({
+      const clerkUser = await clerhorizon shopient.users.createUser({
         emailAddress: ['awakeningjuniorgroup@gmail.com'],
         password: '@pa12!&Ter',
         firstName: 'Parth',
@@ -70,7 +70,7 @@ const createSuperAdminWithClerk = async () => {
       // If user already exists in Clerk, get their ID
       if (clerkError.errors?.[0]?.code === 'form_identifier_exists') {
         console.log('⚠️ User already exists in Clerk. Fetching ID...');
-        const clerkUsers = await clerkClient.users.getUserList({ 
+        const clerkUsers = await clerhorizon shopient.users.getUserList({ 
           emailAddress: ['awakeningjuniorgroup@gmail.com'] 
         });
         

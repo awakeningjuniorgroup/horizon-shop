@@ -42,7 +42,7 @@ const MockPaymentModal = ({ amount, onClose, onSuccess }) => {
             </span>
           </div>
           <div className="flex items-baseline gap-1">
-            <span className="text-2xl text-gray-400 font-light">₹</span>
+            <span className="text-2xl text-gray-400 font-light">FCFA</span>
             <span className="text-4xl font-bold text-white tracking-tight">
               {amount}
             </span>

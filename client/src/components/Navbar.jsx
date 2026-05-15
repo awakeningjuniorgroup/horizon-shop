@@ -233,7 +233,7 @@ const Navbar = () => {
           <img
             className="h-8 md:h-10 w-auto object-contain transition-transform duration-300 active:scale-95"
             src={assets.logo}
-            alt="Horizon Business"
+            alt="horizon shop"
           />
         </div>
 
@@ -547,7 +547,9 @@ const Navbar = () => {
                       className="absolute top-[120%] right-0 w-64 bg-white/95 backdrop-blur-2xl shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] border border-slate-100 rounded-[2rem] p-5 z-50 origin-top-right"
                     >
                       <div className="flex items-center justify-between mb-4">
-                        <h4 className="font-black text-slate-800">Votre panier</h4>
+                        <h4 className="font-black text-slate-800">
+                          Votre panier
+                        </h4>
                         <span className="text-[10px] font-bold text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">
                           {getCartCount()} Items
                         </span>

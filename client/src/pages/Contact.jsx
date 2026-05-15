@@ -197,7 +197,7 @@ const Contact = () => {
                 <h3 className="font-bold text-slate-900 text-lg">
                   Nos contacts
                 </h3>
-                <p className="text-sm text-slate-500 mt-1">+237 694858557</p>
+                <p className="text-sm text-slate-500 mt-1">+237 666666666</p>
                 <p className="text-xs text-slate-400 font-medium">
                   24h/24, 7j/7
                 </p>
@@ -211,7 +211,7 @@ const Contact = () => {
               <div>
                 <h3 className="font-bold text-slate-900 text-lg">Email</h3>
                 <p className="text-sm text-slate-500 mt-1">
-                  support@horizonbusiness.com
+                  support@horizonshop.com
                 </p>
                 {/* <p className="text-xs text-slate-400 font-medium">
                   We reply within 24hrs

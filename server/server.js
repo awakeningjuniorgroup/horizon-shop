@@ -43,9 +43,8 @@ const httpServer = createServer(app);
 
 // 🟢 FIX: CORRECTED allowed origins with proper commas
 const allowedOrigins = [
-  "http://localhost:5173", 
-  "https://horizon-business-1.onrender.com", 
-  "https://horizon-business.vercel.app",
+  "http://localhost:5173",  
+  "https://horizon-shop.vercel.app",
   process.env.FRONTEND_URL
 ].filter(Boolean);
 

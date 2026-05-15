@@ -22,11 +22,11 @@ const Footer = () => {
             <img
               className="w-36 mb-6 object-contain"
               src={assets.logo}
-              alt="Mandvi Cart"
+              alt="horizon shop"
             />
             <p className="text-slate-500 text-sm leading-relaxed mb-8 font-medium">
               Platforme de vente et livraison de nouvelle génération de produits
-              électroniques apportant des produits neufs et des essentiels pour
+               apportant des produits neufs et essentiels pour
               le quotidiens directement à votre porte avec suivi en temps réel
               et vitesse inégalée.
             </p>
@@ -102,7 +102,7 @@ const Footer = () => {
                   />
                 </div>
                 <span className="mt-1.5 group-hover:text-emerald-600 transition-colors">
-                  +237 694858557
+                  +237 666666666
                 </span>
               </li>
               <li className="flex items-start gap-3 text-slate-500 text-sm font-medium group cursor-pointer">
@@ -113,7 +113,7 @@ const Footer = () => {
                   />
                 </div>
                 <span className="mt-1.5 group-hover:text-emerald-600 transition-colors">
-                  contact@horizonbusiness.com
+                  contact@horizonshop.com
                 </span>
               </li>
               <li className="flex items-start gap-3 text-slate-500 text-sm font-medium group cursor-pointer">
@@ -124,7 +124,7 @@ const Footer = () => {
                   />
                 </div>
                 <span className="mt-1.5 leading-relaxed group-hover:text-[#3d618c] transition-colors">
-                  Bafoussam, Cameroun
+                  Yaoundé, Cameroun
                 </span>
               </li>
             </ul>
@@ -135,23 +135,24 @@ const Footer = () => {
         <div className="pt-8 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-slate-500 text-sm font-medium text-center md:text-left">
             © {new Date().getFullYear()}{" "}
-            <span className="font-black text-slate-800">Horizon Buziness</span>.
+            <span className="font-black text-slate-800">horizon shop</span>.
             Tous droits réservés.
           </p>
 
           {/* Your Developer Badge! */}
-          { <div className="flex items-center gap-2 text-slate-400 text-sm font-medium bg-slate-50 px-4 py-2 rounded-full border border-slate-100">
-            <span> by </span>
-            <a
-              href="https://mail.google.com/mail/u/0/?hl=en#inbox?compose=new"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-emerald-600 font-black hover:text-emerald-700 transition-colors"
-            >
-              Awakening and
-              Parth Shah
-            </a>
-          </div> }
+          {
+            <div className="flex items-center gap-2 text-slate-400 text-sm font-medium bg-slate-50 px-4 py-2 rounded-full border border-slate-100">
+              <span> by </span>
+              <a
+                href="https://mail.google.com/mail/u/0/?hl=en#inbox?compose=new"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-emerald-600 font-black hover:text-emerald-700 transition-colors"
+              >
+                horizon shop
+              </a>
+            </div>
+          }
         </div>
       </div>
     </footer>

@@ -429,7 +429,7 @@ const AdminDashboard = () => {
                           fontSize: 11,
                           fontWeight: 500,
                         }}
-                        tickFormatter={(val) => `₹${val}`}
+                        tickFormatter={(val) => `FCFA${val}`}
                       />
                       <RechartsTooltip
                         contentStyle={{
@@ -439,7 +439,7 @@ const AdminDashboard = () => {
                           fontSize: "12px",
                         }}
                         itemStyle={{ fontWeight: 600, color: "#f26691" }}
-                        formatter={(val) => [`₹${val}`, "Revenue"]}
+                        formatter={(val) => [`FCFA${val}`, "Revenue"]}
                       />
                       <Area
                         type="monotone"
@@ -774,7 +774,7 @@ const AdminDashboard = () => {
                       axisLine={false}
                       tickLine={false}
                       tick={{ fill: "#64748b", fontSize: 11, fontWeight: 500 }}
-                      tickFormatter={(val) => `₹${val}`}
+                      tickFormatter={(val) => `FCFA${val}`}
                     />
                     <RechartsTooltip
                       contentStyle={{

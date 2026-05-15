@@ -106,7 +106,7 @@ const placeOrderMain = async (req, res, paymentMethod, paymentStatus) => {
 
         // 🟢 PREVENT NEGATIVE PROFIT BUG: 
         // If the customer got "Free Delivery", the Admin pays the rider out of their commission.
-        // We use Math.max to ensure the platform profit doesn't drop below ₹0 on tiny orders.
+        // We use Math.max to ensure the platform profit doesn't drop below FCFA0 on tiny orders.
         if (deliveryCollected === 0) {
             platformNetProfit = Math.max(0, platformGrossCommission - riderEarnings);
         }

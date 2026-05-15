@@ -485,7 +485,7 @@ const SuperDashboard = () => {
                           fontSize: 11,
                           fontWeight: 600,
                         }}
-                        tickFormatter={(val) => `₹${val}`}
+                        tickFormatter={(val) => `FCFA${val}`}
                       />
                       <RechartsTooltip
                         contentStyle={{
@@ -609,7 +609,7 @@ const SuperDashboard = () => {
                           fontSize: 11,
                           fontWeight: 600,
                         }}
-                        tickFormatter={(val) => `₹${val}`}
+                        tickFormatter={(val) => `FCFA${val}`}
                       />
                       <RechartsTooltip
                         cursor={{ fill: "#f8fafc" }}
@@ -680,7 +680,7 @@ const SuperDashboard = () => {
                       />
                       <Bar
                         dataKey="sales"
-                        name="Revenue (₹)"
+                        name="Revenue (FCFA)"
                         fill="#f472b6"
                         radius={[0, 4, 4, 0]}
                       />

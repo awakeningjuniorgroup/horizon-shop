@@ -132,7 +132,7 @@ const AnimatedTrackingCard = ({ order, onTrack }) => {
       <div>
         <p className="text-slate-600 text-sm font-medium leading-relaxed mb-6 border-l-2 border-emerald-500 pl-3">
           {isPacking &&
-            "Vos articles sont en cours de tri et d'emballage chez Horizon Business."}
+            "Vos articles sont en cours de tri et d'emballage chez horizon shopizon shopizon shopizon shop
           {isReady && "Votre commande est prête. Un livreur a été assigné!"}
           {isOut &&
             "un livreur est en route! L'heure d'arrivée est visible sur la carte en direct.."}
@@ -435,10 +435,10 @@ const MyOrders = () => {
                 <div class="header">
                     <div class="brand">
                         <div class="brand-icon">
-                            <img src="${window.location.origin}/favicon.png" alt="Horizon Business Logo" />
+                            <img src="${window.location.origin}/favicon.png" alt="horizon shopizon shopizon shopizon shopizon shop Logo" />
                         </div>
                         <div class="brand-info">
-                            <h1>Horizon Business</h1>
+                            <h1>horizon shop</h1>
                             <p>Multi-Vendor Grocery Store</p>
                         </div>
                     </div>

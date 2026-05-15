@@ -13,11 +13,11 @@ const Banned = () => {
         </div>
 
         <div className="p-8 space-y-4">
-          <h1 className="text-3xl font-bold text-gray-800">
-            Compte suspendu
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-800">Compte suspendu</h1>
           <p className="text-gray-500">
-            Votre compte a ete suspendu a cause de la violation de notre communaute. Votre acces a Horizon business est prohibé
+            Votre compte a ete suspendu a cause de la violation de notre
+            communaute. Votre acces a horizon shopizon shopizon shopizon shop
+            est prohibé
           </p>
           <div className="bg-red-50 border border-red-100 p-4 rounded-xl text-left">
             <h3 className="text-red-800 font-bold text-sm uppercase mb-2">

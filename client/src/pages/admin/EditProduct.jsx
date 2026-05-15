@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../context/AppContext';
 import { useParams, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import { Upload, X, Save, ArrowLeft, Plus } from 'lucide-react'; // 👈 Fixed: Added 'Plus'
+import { Upload, X, Save, ArrowLeft, Plus } from 'lucide-react';
 
 const EditProduct = () => {
     const { productId } = useParams();
@@ -11,24 +11,26 @@ const EditProduct = () => {
     
     const [loading, setLoading] = useState(false);
     
-    // Images
+    // États pour les nouvelles images à uploader
     const [image1, setImage1] = useState(null);
     const [image2, setImage2] = useState(null);
     const [image3, setImage3] = useState(null);
     const [image4, setImage4] = useState(null);
-    const [existingImages, setExistingImages] = useState([]); // Stores URLs of existing images
+    
+    // Stocke les URLs des images déjà présentes sur le serveur
+    const [existingImages, setExistingImages] = useState([]);
 
-    // Basic Details
+    // Détails du produit
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
-    const [category, setCategory] = useState("Vegetables");
-    const [subCategory, setSubCategory] = useState("Organic");
+    const [category, setCategory] = useState("");
+    const [subCategory, setSubCategory] = useState("");
     const [bestseller, setBestseller] = useState(false);
     
-    // Variants State
+    // État des Variantes
     const [variants, setVariants] = useState([{ weight: '', price: '', offerPrice: '', inStock: true }]);
 
-    // 1. Fetch Product Data
+    // 1. Récupération des données du produit
     useEffect(() => {
         const fetchProduct = async () => {
             try {
@@ -36,33 +38,30 @@ const EditProduct = () => {
                 if (data.success) {
                     const p = data.product;
                     setName(p.name);
-                    // Handle description (array vs string)
                     setDescription(Array.isArray(p.description) ? p.description.join('\n') : p.description);
                     setCategory(p.category);
                     setSubCategory(p.subCategory);
                     setBestseller(p.bestseller);
-                    setExistingImages(p.image); // Save existing URLs
+                    setExistingImages(p.image || []);
                     
-                    // Handle Variants (or fallback for old products)
                     if(p.variants && p.variants.length > 0) {
                         setVariants(p.variants);
                     } else {
-                        // Fallback: Create 1 variant from root price
                         setVariants([{ weight: 'Standard', price: p.price, offerPrice: p.offerPrice, inStock: p.inStock }]);
                     }
                 } else {
-                    toast.error("Product not found");
+                    toast.error("Produit non trouvé");
                     navigate('/admin/products');
                 }
             } catch (error) { 
                 console.error(error);
-                toast.error("Error fetching product"); 
+                toast.error("Erreur lors du chargement du produit"); 
             }
         };
         fetchProduct();
     }, [productId, axios, navigate]);
 
-    // 2. Variant Handlers
+    // 2. Gestion des Variantes
     const handleVariantChange = (index, field, value) => {
         const updatedVariants = [...variants];
         updatedVariants[index][field] = value;
@@ -79,14 +78,14 @@ const EditProduct = () => {
         }
     };
 
-    // 3. Submit Handler
+    // 3. Soumission du formulaire
     const onSubmitHandler = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
             const formData = new FormData();
-            formData.append("productId", productId);
             
+            // Préparation des données structurées
             const productData = {
                 productId,
                 name,
@@ -103,26 +102,27 @@ const EditProduct = () => {
             };
 
             formData.append("productData", JSON.stringify(productData));
+            formData.append("productId", productId); // Sécurité supplémentaire pour certains backends
 
-            // Only append NEW images
-            image1 && formData.append("image1", image1);
-            image2 && formData.append("image2", image2);
-            image3 && formData.append("image3", image3);
-            image4 && formData.append("image4", image4);
+            // Ajout des nouveaux fichiers images si présents
+            if (image1) formData.append("image1", image1);
+            if (image2) formData.append("image2", image2);
+            if (image3) formData.append("image3", image3);
+            if (image4) formData.append("image4", image4);
 
             const { data } = await axios.post('/api/product/update', formData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
             if (data.success) {
-                toast.success("Product Updated");
+                toast.success("Produit mis à jour avec succès");
                 navigate('/admin/products');
             } else {
                 toast.error(data.message);
             }
         } catch (error) {
             console.error(error);
-            toast.error(error.message);
+            toast.error("Erreur lors de la mise à jour");
         } finally {
             setLoading(false);
         }
@@ -135,74 +135,86 @@ const EditProduct = () => {
                 <button type="button" onClick={() => navigate('/admin/products')} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
                     <ArrowLeft size={24} className="text-gray-600"/>
                 </button>
-                <h1 className="text-2xl font-bold text-gray-800">Edit Product</h1>
+                <h1 className="text-2xl font-bold text-gray-800">Modifier le Produit</h1>
             </div>
 
-            {/* Image Upload Section */}
+            {/* Section Images */}
             <div>
-                <p className="font-bold text-gray-700 mb-3">Product Images</p>
+                <p className="font-bold text-gray-700 mb-3">Images du Produit</p>
                 <div className="flex gap-4 flex-wrap">
-                    {[image1, image2, image3, image4].map((img, index) => (
+                    {[image1, image2, image3, image4].map((newImg, index) => (
                         <label key={index} htmlFor={`image${index+1}`} className="cursor-pointer group relative">
                             <div className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-xl flex items-center justify-center bg-gray-50 overflow-hidden hover:border-green-500 transition-colors">
-                                {img ? (
-                                    // Preview NEW upload
-                                    <img className="w-full h-full object-cover" src={URL.createObjectURL(img)} alt="" />
+                                {newImg ? (
+                                    <img className="w-full h-full object-cover" src={URL.createObjectURL(newImg)} alt="Aperçu" />
                                 ) : existingImages[index] ? (
-                                    // Show EXISTING image
-                                    <img className="w-full h-full object-cover opacity-90" src={existingImages[index]} alt="" />
+                                    <img className="w-full h-full object-cover opacity-90" src={existingImages[index]} alt="Existant" />
                                 ) : (
                                     <Upload className="text-gray-400 group-hover:text-green-500" />
                                 )}
                             </div>
                             <input onChange={(e) => {
-                                if (index === 0) setImage1(e.target.files[0]);
-                                if (index === 1) setImage2(e.target.files[0]);
-                                if (index === 2) setImage3(e.target.files[0]);
-                                if (index === 3) setImage4(e.target.files[0]);
+                                const file = e.target.files[0];
+                                if (index === 0) setImage1(file);
+                                if (index === 1) setImage2(file);
+                                if (index === 2) setImage3(file);
+                                if (index === 3) setImage4(file);
                             }} type="file" id={`image${index+1}`} hidden />
                         </label>
                     ))}
                 </div>
-                <p className="text-xs text-gray-400 mt-2">*Uploading a new image will replace the existing one in that slot.</p>
+                <p className="text-xs text-gray-400 mt-2">* Sélectionner une nouvelle image remplacera l'ancienne dans cet emplacement.</p>
             </div>
 
-            {/* Basic Info */}
+            {/* Informations de base (Catégorie libre) */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <p className="font-bold text-gray-700 mb-2">Product Name</p>
-                    <input required onChange={(e) => setName(e.target.value)} value={name} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-500 outline-none transition-colors" type="text" placeholder="e.g. Organic Bananas" />
+                    <p className="font-bold text-gray-700 mb-2">Nom du produit</p>
+                    <input required onChange={(e) => setName(e.target.value)} value={name} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-500 outline-none transition-colors" type="text" placeholder="Ex: Bananes Fraîches" />
                 </div>
                 <div>
-                    <p className="font-bold text-gray-700 mb-2">Category</p>
-                    <select required onChange={(e) => setCategory(e.target.value)} value={category} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-500 outline-none cursor-pointer">
-                        <option value="Vegetables">Vegetables</option>
-                        <option value="Fruits">Fruits</option>
-                        <option value="Dairy">Dairy</option>
-                        <option value="Beverages">Beverages</option>
-                    </select>
+                    <p className="font-bold text-gray-700 mb-2">Catégorie</p>
+                    <input 
+                        required 
+                        onChange={(e) => setCategory(e.target.value)} 
+                        value={category} 
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-500 outline-none transition-colors" 
+                        type="text" 
+                        placeholder="Entrez une catégorie (ex: Fruits)" 
+                    />
+                </div>
+                <div>
+                    <p className="font-bold text-gray-700 mb-2">Sous-catégorie</p>
+                    <input 
+                        required 
+                        onChange={(e) => setSubCategory(e.target.value)} 
+                        value={subCategory} 
+                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-500 outline-none transition-colors" 
+                        type="text" 
+                        placeholder="Ex: Bio, Importé..." 
+                    />
                 </div>
             </div>
 
-            {/* Variants */}
+            {/* Variantes */}
             <div>
                 <div className="flex justify-between items-center mb-3">
-                    <p className="font-bold text-gray-700">Product Variants</p>
+                    <p className="font-bold text-gray-700">Variantes de prix & poids</p>
                     <button type="button" onClick={addVariant} className="text-sm text-green-600 font-bold hover:text-green-700 flex items-center gap-1">
-                        <Plus size={16}/> Add Variant
+                        <Plus size={16}/> Ajouter une variante
                     </button>
                 </div>
                 <div className="space-y-3">
                     {variants.map((variant, index) => (
                         <div key={index} className="flex flex-col md:flex-row gap-3 p-4 bg-gray-50 rounded-xl border border-gray-200 relative">
-                            <input required placeholder="Weight (e.g. 1kg)" value={variant.weight} onChange={(e) => handleVariantChange(index, 'weight', e.target.value)} className="flex-1 px-3 py-2 rounded-lg border border-gray-300 text-sm" />
-                            <input required type="number" placeholder="MRP" value={variant.price} onChange={(e) => handleVariantChange(index, 'price', e.target.value)} className="flex-1 px-3 py-2 rounded-lg border border-gray-300 text-sm" />
-                            <input required type="number" placeholder="Offer Price" value={variant.offerPrice} onChange={(e) => handleVariantChange(index, 'offerPrice', e.target.value)} className="flex-1 px-3 py-2 rounded-lg border border-gray-300 text-sm" />
+                            <input required placeholder="Poids (ex: 1kg)" value={variant.weight} onChange={(e) => handleVariantChange(index, 'weight', e.target.value)} className="flex-1 px-3 py-2 rounded-lg border border-gray-300 text-sm" />
+                            <input required type="number" placeholder="Prix Normal" value={variant.price} onChange={(e) => handleVariantChange(index, 'price', e.target.value)} className="flex-1 px-3 py-2 rounded-lg border border-gray-300 text-sm" />
+                            <input required type="number" placeholder="Prix Promo" value={variant.offerPrice} onChange={(e) => handleVariantChange(index, 'offerPrice', e.target.value)} className="flex-1 px-3 py-2 rounded-lg border border-gray-300 text-sm" />
                             
                             <div className="flex items-center gap-2">
                                 <label className="text-sm text-gray-600 flex items-center gap-2 cursor-pointer">
                                     <input type="checkbox" checked={variant.inStock} onChange={(e) => handleVariantChange(index, 'inStock', e.target.checked)} className="rounded text-green-600 focus:ring-green-500" />
-                                    In Stock
+                                    En stock
                                 </label>
                             </div>
 
@@ -219,17 +231,18 @@ const EditProduct = () => {
             {/* Description */}
             <div>
                 <p className="font-bold text-gray-700 mb-2">Description</p>
-                <textarea required onChange={(e) => setDescription(e.target.value)} value={description} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-500 outline-none h-32 resize-none" placeholder="Enter product details (one per line)"></textarea>
+                <textarea required onChange={(e) => setDescription(e.target.value)} value={description} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-green-500 outline-none h-32 resize-none" placeholder="Détails du produit (un par ligne)"></textarea>
             </div>
 
-            {/* Bestseller Checkbox */}
+            {/* Bestseller */}
             <div className="flex items-center gap-3">
                 <input type="checkbox" id="bestseller" checked={bestseller} onChange={() => setBestseller(prev => !prev)} className="w-5 h-5 cursor-pointer accent-green-600" />
-                <label htmlFor="bestseller" className="cursor-pointer text-gray-700 font-medium">Add to Bestsellers</label>
+                <label htmlFor="bestseller" className="cursor-pointer text-gray-700 font-medium">Ajouter aux meilleures ventes</label>
             </div>
 
+            {/* Bouton de validation */}
             <button type="submit" disabled={loading} className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-green-200 transition-all active:scale-95 flex items-center justify-center gap-2">
-                {loading ? "Updating..." : <><Save size={20}/> Update Product</>}
+                {loading ? "Mise à jour..." : <><Save size={20}/> Enregistrer les modifications</>}
             </button>
         </form>
     );

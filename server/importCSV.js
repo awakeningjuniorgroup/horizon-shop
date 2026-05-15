@@ -6,22 +6,22 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const MONGODB_URI = "mongodb+srv://awakeningjuniorgroup_db_user:2NkBb67AOJLdvbFS@kuakumarket.0qyzfx1.mongodb.net/?appName=kuakumarket";
+const MONGODB_URI = process.env.MONGODB_URI;
+// ID du vendeur Mandvi Cart
 const SELLER_ID = new mongoose.Types.ObjectId("69b291f6af9592fee026420b");
 
 const importData = async () => {
     try {
-        console.log("⏳ Connecting to Mandvi Cart Cluster...");
+        console.log("⏳ Connexion au cluster Mandvi Cart...");
         await mongoose.connect(MONGODB_URI);
-        console.log("✅ Connected to MongoDB.");
+        console.log("✅ Connecté à MongoDB.");
 
-        // Store products grouped by category
         const productsByCategory = {};
         const allParsedProducts = [];
 
-        console.log("📖 Reading CSV file to group categories...");
+        console.log("📖 Lecture du fichier CSV et groupement par catégories...");
         
-        fs.createReadStream('BigBasketProducts.csv') // Ensure exact filename
+        fs.createReadStream('BigBasketProducts.csv')
             .pipe(csv())
             .on('data', (row) => {
                 if (row.product && row.sale_price) {
@@ -29,23 +29,20 @@ const importData = async () => {
                     
                     const newProduct = {
                         name: row.product,
-                        description: [row.description || "Premium quality product delivered by Mandvi Cart."],
+                        description: [row.description],
                         image: ["https://via.placeholder.com/400"], 
                         category: categoryName,
                         subCategory: row.sub_category || categoryName,
                         brand: row.brand || "Generic", 
-                        
                         price: parseFloat(row.market_price) || parseFloat(row.sale_price),
                         offerPrice: parseFloat(row.sale_price),
                         inStock: true,
-                        bestseller: parseFloat(row.rating) >= 4.0, // Mark high rated as bestseller
+                        bestseller: parseFloat(row.rating) >= 4.0,
                         sellerId: SELLER_ID,
                         date: Date.now(),
-                        
-                        averageRating: parseFloat(row.rating) || Math.floor(Math.random() * 2) + 3, // Random 3-5 if missing
+                        averageRating: parseFloat(row.rating) || Math.floor(Math.random() * 2) + 3,
                         numberOfReviews: 0,
                         reviews: [],
-
                         variants: [
                             {
                                 weight: row.type || "Standard Pack",
@@ -65,11 +62,9 @@ const importData = async () => {
                 }
             })
             .on('end', async () => {
-                console.log(`📦 Successfully loaded ${allParsedProducts.length} base items from CSV.`);
+                console.log(`📦 ${allParsedProducts.length} articles de base chargés.`);
 
-                // ==========================================
-                // 1. ESTABLISH NEW CUSTOM CATEGORIES
-                // ==========================================
+                // 1. Établir les nouvelles catégories personnalisées
                 const newCategoriesToEstablish = [
                     "Electronics & Gadgets", 
                     "Toys & Games", 
@@ -77,36 +72,33 @@ const importData = async () => {
                     "Home Appliances"
                 ];
 
-                console.log(`✨ Establishing ${newCategoriesToEstablish.length} brand new categories...`);
-                
                 newCategoriesToEstablish.forEach(newCat => {
                     productsByCategory[newCat] = [];
-                    // Borrow 10 random products from our pool to act as base templates for the new category
                     for(let i = 0; i < 10; i++) {
                         const randomProduct = allParsedProducts[Math.floor(Math.random() * allParsedProducts.length)];
-                        const clonedProduct = JSON.parse(JSON.stringify(randomProduct));
-                        clonedProduct.category = newCat; // Reassign to new category
+                        // Clonage propre
+                        const clonedProduct = { ...randomProduct };
+                        clonedProduct.category = newCat;
                         clonedProduct.subCategory = newCat;
-                        clonedProduct.name = `${newCat} Special Item ${i + 1}`; // Rename it
+                        clonedProduct.name = `${newCat} Special Item ${i + 1}`;
                         productsByCategory[newCat].push(clonedProduct);
                     }
                 });
 
-                // ==========================================
-                // 2. ENFORCE EXACTLY 100 ITEMS PER CATEGORY
-                // ==========================================
-                console.log("⚙️ Formatting database so EVERY category has exactly 100 items...");
+                // 2. Formater pour avoir EXACTEMENT 100 articles par catégorie
+                console.log("⚙️ Préparation : 100 articles par catégorie...");
                 const finalProductsToInsert = [];
 
                 for (const [category, products] of Object.entries(productsByCategory)) {
                     let count = 0;
-                    
-                    while (count < 100) {
-                        // Pick a base product. If we run out of unique products, it loops back to the start
+                    // Limite fixée à 100 pour correspondre à votre log
+                    while (count < 100) { 
                         const baseProduct = products[count % products.length];
-                        const finalProduct = JSON.parse(JSON.stringify(baseProduct)); // Deep copy
+                        const finalProduct = { ...baseProduct }; 
                         
-                        // If we are duplicating an item to reach 100, tweak the name so it looks unique on the frontend
+                        // FIX : Génération d'un SKU unique pour éviter l'erreur E11000
+                        finalProduct.sku = `SKU-${category.replace(/\s+/g, '')}-${count}-${Math.random().toString(36).substring(7)}`.toUpperCase();
+
                         if (count >= products.length) {
                             finalProduct.name = `${baseProduct.name} - Pack ${Math.floor(count / products.length) + 1}`;
                         }
@@ -116,25 +108,24 @@ const importData = async () => {
                     }
                 }
 
-                // ==========================================
-                // 3. UPLOAD TO DATABASE
-                // ==========================================
+                // 3. Upload vers la base de données
                 try {
-                    console.log(`🚀 Wiping old items...`);
+                    console.log(`🚀 Suppression des anciens articles...`);
                     await Product.deleteMany({}); 
                     
-                    console.log(`📦 Pushing ${finalProductsToInsert.length} perfectly sorted products into database...`);
+                    console.log(`📦 Insertion de ${finalProductsToInsert.length} produits...`);
+                    // Utilisation de insertMany pour la performance
                     await Product.insertMany(finalProductsToInsert);
                     
-                    console.log("✅ Success! Check your website. Every category now has exactly 100 items.");
+                    console.log("✅ Succès ! Chaque catégorie a maintenant exactement 100 articles.");
                     process.exit();
                 } catch (err) {
-                    console.error("❌ Error pushing to database:", err);
+                    console.error("❌ Erreur lors de l'insertion :", err);
                     process.exit(1);
                 }
             });
     } catch (error) {
-        console.error("❌ Connection error:", error);
+        console.error("❌ Erreur de connexion :", error);
         process.exit(1);
     }
 };

@@ -4,7 +4,7 @@ import Order from "../models/orderModel.js";
 import { v2 as cloudinary } from "cloudinary";
 
 // ==========================================
-// 🤖 ASSISTANT : RÉPONSE IA (SUPPORT HORIZON BUSINESS)
+// 🤖 ASSISTANT : RÉPONSE IA (SUPPORT horizon shopizon shop)
 // ==========================================
 const getBotResponse = async (userId, text, hasImage) => {
     const lowerText = text ? text.toLowerCase() : "";
@@ -26,7 +26,7 @@ const getBotResponse = async (userId, text, hasImage) => {
         const hour = new Date().getHours();
         let greeting = hour < 12 ? "Bonjour" : hour < 18 ? "Bon après-midi" : "Bonsoir";
 
-        response.text = `✨ **${greeting}, ${userName}.** Je suis l'**IA de Support Horizon Business**.\n\nJe suis ici pour vous aider à suivre vos commandes, gérer vos livraisons ou traiter vos demandes de SAV. Comment puis-je vous aider ?`;
+        response.text = `✨ **${greeting}, ${userName}.** Je suis l'**IA de Support horizon shop**.\n\nJe suis ici pour vous aider à suivre vos commandes, gérer vos livraisons ou traiter vos demandes de SAV. Comment puis-je vous aider ?`;
         response.quickReplies = ["📦 Suivre commande", "🚚 Retard livraison", "💔 Signaler panne", "💳 Politique de retour", "🔒 Sécurité compte", "👤 Agent humain"];
         return response;
     }
@@ -76,7 +76,7 @@ const getBotResponse = async (userId, text, hasImage) => {
 
     // 7. 🔒 COMPTE & SÉCURITÉ
     if (['compte', 'password', 'mot de passe', 'connexion', 'sécurité'].some(w => lowerText.includes(w))) {
-        response.text = "✨ **Gestion de la Sécurité.**\nVotre profil Horizon Business est protégé par un chiffrement de niveau entreprise.\n\nSi vous souhaitez réinitialiser vos accès, déconnectez-vous et cliquez sur 'Mot de passe oublié'. Si vous suspectez une intrusion, je peux verrouiller votre compte immédiatement.";
+        response.text = "✨ **Gestion de la Sécurité.**\nVotre profil horizon shop est protégé par un chiffrement de niveau entreprise.\n\nSi vous souhaitez réinitialiser vos accès, déconnectez-vous et cliquez sur 'Mot de passe oublié'. Si vous suspectez une intrusion, je peux verrouiller votre compte immédiatement.";
         response.quickReplies = ["👤 Admin Sécurité", "🔙 Menu Principal"];
         return response;
     }
@@ -89,7 +89,7 @@ const getBotResponse = async (userId, text, hasImage) => {
 
     // 9. ✅ CLÔTURE
     if (['merci', 'ok', 'bye', 'merci', 'au revoir', 'parfait'].some(w => lowerText.includes(w))) {
-        response.text = "✨ **Session terminée.**\nCe fut un plaisir de vous aider, " + userName + ".\n\nL'intelligence Horizon Business se met en veille. Bonne continuation ! 🌌";
+        response.text = "✨ **Session terminée.**\nCe fut un plaisir de vous aider, " + userName + ".\n\nL'intelligence horizon shop se met en veille. Bonne continuation ! 🌌";
         return response;
     }
 

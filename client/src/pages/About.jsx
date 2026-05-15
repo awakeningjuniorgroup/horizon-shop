@@ -12,18 +12,20 @@ import {
   Zap,
   Monitor,
   ChevronDown,
+  ShoppingCart,
+  Sofa,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-// 🚀 HORIZON BUSINESS JOURNEY
+// 🚀 horizon shopizon shop JOURNEY
 // Couleurs : Bleu Logo (#4A76AC), Fond Blanc (#FFFFFF), Texte Slate (#1e293b)
 const journeySteps = [
   {
     id: 1,
     title: "Explorez l'Innovation",
     description:
-      "Parcourez notre catalogue premium : smartphones de pointe, ordinateurs puissants et gadgets dernier cri. Trouvez la technologie qui vous ressemble.",
-    icon: <Smartphone size={32} style={{ color: "#4A76AC" }} />,
+      "Parcourez notre catalogue premium : meubles, accesssoires de cuisine dernier cri. Trouvez le produit qui vous ressemble.",
+    icon: <Sofa size={32} style={{ color: "#4A76AC" }} />,
     color: "bg-blue-50",
     role: "CLIENT",
   },
@@ -31,7 +33,7 @@ const journeySteps = [
     id: 2,
     title: "Paiement Sécurisé",
     description:
-      "Transaction ultra-rapide et cryptée. Plusieurs options de paiement disponibles pour acquérir vos nouveaux appareils en toute sérénité.",
+      "Transaction ultra-rapide et cryptée. Plusieurs options de paiement disponibles pour acquérir vos nouveaux produits en toute sérénité.",
     icon: <CreditCard size={32} style={{ color: "#4A76AC" }} />,
     color: "bg-blue-50",
     role: "CLIENT",
@@ -40,7 +42,7 @@ const journeySteps = [
     id: 3,
     title: "Tests & Préparation",
     description:
-      "Chaque produit Horizon Business est rigoureusement testé par nos experts avant d'être emballé dans un packaging protecteur haute densité.",
+      "Chaque produit horizon shop est rigoureusement testé par nos experts avant d'être emballé dans un packaging protecteur haute densité.",
     icon: <PackageCheck size={32} style={{ color: "#4A76AC" }} />,
     color: "bg-blue-50",
     role: "HORIZON HQ",
@@ -67,7 +69,7 @@ const journeySteps = [
     id: 6,
     title: "Déballez le Futur",
     description:
-      "Réceptionnez votre commande, vérifiez l'intégrité de vos produits et profitez de la garantie Horizon Business. Votre mise à niveau commence ici.",
+      "Réceptionnez votre commande, vérifiez l'intégrité de vos produits et profitez de la garantie horizon shopizon shop. Votre mise à niveau commence ici.",
     icon: <Cpu size={32} style={{ color: "#4A76AC" }} />,
     color: "bg-blue-50",
     role: "CLIENT",
@@ -117,19 +119,21 @@ const About = () => {
             whileHover={{ scale: 1.05 }}
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#4A76AC]/5 border border-[#4A76AC]/20 text-[#4A76AC] mb-8 cursor-pointer shadow-sm"
           >
-            <Monitor size={16} />
+            <ShoppingCart size={16} />
             <span className="text-sm font-semibold tracking-wide uppercase">
-              L'excellence technologique à portée de main
+              Tout à petit prix
             </span>
           </motion.div>
 
           <h1 className="text-6xl md:text-8xl font-black text-slate-900 tracking-tight leading-[1.1]">
             Propulsez vous sur <br />
-            <span style={{ color: "#4A76AC" }}>Horizon Business</span>
+            <span style={{ color: "#4A76AC" }}>horizon  shop</span>
           </h1>
 
           <p className="mt-6 text-lg md:text-2xl text-slate-600 font-medium max-w-2xl mx-auto leading-relaxed">
-            Votre partenaire de confiance pour le matériel électronique. Performance, authenticité et service premium réunis dans une expérience unique.
+            Votre partenaire de confiance pour les produits du quotidien.
+            Performance, authenticité et service premium réunis dans une
+            expérience unique.
           </p>
 
           <motion.button
@@ -248,13 +252,19 @@ const About = () => {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#4A76AC]/10 rounded-full blur-[100px] pointer-events-none"></div>
 
         <div className="relative z-10 flex flex-col items-center">
-          <ShieldCheck size={64} style={{ color: "#4A76AC" }} className="mb-6" />
+          <ShieldCheck
+            size={64}
+            style={{ color: "#4A76AC" }}
+            className="mb-6"
+          />
 
           <h2 className="text-4xl md:text-6xl font-black text-slate-900 tracking-tight mb-6">
-            Prêt pour le <span style={{ color: "#4A76AC" }}>Niveau Supérieur ?</span>
+            Prêt pour le{" "}
+            <span style={{ color: "#4A76AC" }}>Niveau Supérieur ?</span>
           </h2>
           <p className="text-slate-600 text-lg md:text-xl max-w-2xl mx-auto mb-10 font-light">
-            Rejoignez Horizon Business. Profitez des dernières innovations avec une garantie certifiée et un support client expert.
+            Rejoignez horizon shop. Profitez des dernières innovations avec une
+            garantie certifiée et un support client expert.
           </p>
 
           <motion.button

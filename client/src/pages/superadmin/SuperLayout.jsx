@@ -34,7 +34,7 @@ const SuperLayout = () => {
   const links = [
     { name: "Overview", path: "/superadmin/dashboard", icon: LayoutDashboard },
     { name: "Manage Admins", path: "/superadmin/admins", icon: ShieldCheck },
-    { name: "All Users", path: "/superadmin/users", icon: Users },
+    { name: "All users", path: "/superadmin/users", icon: Users },
     { name: "Payout Requests", path: "/superadmin/payouts", icon: IndianRupee },
     { name: "Content Manager", path: "/superadmin/content", icon: Layout },
     { name: "Chat Monitor", path: "/superadmin/chat", icon: MessageSquare },
@@ -77,7 +77,7 @@ const SuperLayout = () => {
             </button>
           </div>
           <h2 className="text-2xl font-black text-white tracking-tight drop-shadow-md mt-1">
-            Horizon business <span className="text-purple-500">OS</span>
+            horizon shop <span className="text-purple-500">OS</span>
           </h2>
         </div>
 

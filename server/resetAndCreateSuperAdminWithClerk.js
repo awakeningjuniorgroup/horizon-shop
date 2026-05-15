@@ -1,7 +1,7 @@
 import "dotenv/config";
 import mongoose from 'mongoose';
 import User from './models/User.js';
-import { clerkClient } from '@clerk/clerk-sdk-node';
+import { clerhorizon shopient } from '@clerk/clerk-sdk-node';
 
 const resetAndCreateSuperAdminWithClerk = async () => {
   try {
@@ -27,7 +27,7 @@ const resetAndCreateSuperAdminWithClerk = async () => {
     let clerkUserId = '';
     
     try {
-      const clerkUser = await clerkClient.users.createUser({
+      const clerkUser = await clerhorizon shopient.users.createUser({
         emailAddress: ['awakeningjuniorgroup@gmail.com'],
         password: '@pa12!&Ter',
         firstName: 'Awakening',
@@ -47,19 +47,19 @@ const resetAndCreateSuperAdminWithClerk = async () => {
         console.log('⚠️ User already exists in Clerk. Deleting and recreating...\n');
         
         try {
-          const clerkUsers = await clerkClient.users.getUserList({ 
+          const clerkUsers = await clerhorizon shopient.users.getUserList({ 
             emailAddress: ['awakeningjuniorgroup@gmail.com'] 
           });
           
           if (clerkUsers.data && clerkUsers.data.length > 0) {
             const oldClerkUserId = clerkUsers.data[0].id;
             console.log(`   Deleting old Clerk user: ${oldClerkUserId}...`);
-            await clerkClient.users.deleteUser(oldClerkUserId);
+            await clerhorizon shopient.users.deleteUser(oldClerkUserId);
             console.log('   ✅ Old Clerk user deleted\n');
             
             // Now create new one
             console.log('   Creating new Clerk user...');
-            const newClerkUser = await clerkClient.users.createUser({
+            const newClerkUser = await clerhorizon shopient.users.createUser({
               emailAddress: ['awakeningjuniorgroup@gmail.com'],
               password: 'pass321',
               firstName: 'Parth',
