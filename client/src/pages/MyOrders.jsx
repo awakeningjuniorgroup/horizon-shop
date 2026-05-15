@@ -132,10 +132,10 @@ const AnimatedTrackingCard = ({ order, onTrack }) => {
       <div>
         <p className="text-slate-600 text-sm font-medium leading-relaxed mb-6 border-l-2 border-emerald-500 pl-3">
           {isPacking &&
-            "Vos articles sont en cours de tri et d'emballage chez horizon shopizon shopizon shopizon shop
-          {isReady && "Votre commande est prête. Un livreur a été assigné!"}
-          {isOut &&
-            "un livreur est en route! L'heure d'arrivée est visible sur la carte en direct.."}
+              "Vos articles sont en cours de tri et d'emballage chez horizon  shop"}
+            {isReady && "Votre commande est prête. Un livreur a été assigné!"}
+            {isOut &&
+              "un livreur est en route! L'heure d'arrivée est visible sur la carte en direct.."}
         </p>
         <div className="flex flex-col gap-3">
           <div className="flex justify-between items-center gap-3">
