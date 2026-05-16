@@ -3,44 +3,44 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 
 const TestimonialCarousel = () => {
-  const testimonials = [
-    {
-      _id: 1,
-      name: "Priya Sharma",
-      role: "Working Mother & Teacher",
-      image: "https://randomuser.me/api/portraits/women/44.jpg",
-      text: "Managing a full-time job and household chores used to be exhausting. Kuaku Market delivers fresh vegetables and daily essentials to my doorstep in 15 minutes. It's completely replaced my weekend sabzi mandi visits.",
-      rating: 5,
-      verified: true,
-    },
-    {
-      _id: 2,
-      name: "Rajesh Verma",
-      role: "Software Engineer",
-      image: "https://randomuser.me/api/portraits/men/32.jpg",
-      text: "The UPI integration is seamless and they often have better discounts than the big chain supermarkets. I love that I can support local Kirana vendors through a beautifully built, modern app.",
-      rating: 5,
-      verified: true,
-    },
-    {
-      _id: 3,
-      name: "Ananya Patel",
-      role: "Freelance Designer",
-      image: "https://randomuser.me/api/portraits/women/68.jpg",
-      text: "I am extremely particular about the quality of my organic produce. Since I switched to Kuaku Market, the sorting and quality checks on their fresh fruits and dairy have been flawless every single time.",
-      rating: 5,
-      verified: true,
-    },
-    {
-      _id: 4,
-      name: "Amit Chawla",
-      role: "Cloud Kitchen Owner",
-      image: "https://randomuser.me/api/portraits/men/45.jpg",
-      text: "As someone running a food business, timely ingredient delivery is critical. Kuaku Market's riders are incredibly polite and have never missed a morning restock. An absolute game-changer for daily supplies.",
-      rating: 5,
-      verified: true,
-    },
-  ];
+ const testimonials = [
+  {
+    _id: 1,
+    name: "Priya Sharma",
+    role: "Mère au foyer & Passionnée de Cuisine",
+    image: "https://randomuser.me/api/portraits/women/44.jpg",
+    text: "J'ai commandé mon nouveau robot pâtissier multifonction ici. La livraison a été ultra-rapide et l'appareil était parfaitement emballé. C'est devenu mon outil indispensable au quotidien pour régaler toute la famille !",
+    rating: 5,
+    verified: true,
+  },
+  {
+    _id: 2,
+    name: "Rajesh kamga",
+    role: "Ingénieur Logiciel & Adepte de Smart Home",
+    image: "https://randomuser.me/api/portraits/men/32.jpg",
+    text: "Le processus d'achat via l'application est d'une fluidité incroyable. J'ai pu acheter mon réfrigérateur connecté avec une excellente réduction par rapport aux magasins physiques. Le service de livraison a même installé l'appareil chez moi.",
+    rating: 5,
+    verified: true,
+  },
+  {
+    _id: 3,
+    name: "Ananya fotso",
+    role: "Architecte d'Intérieur",
+    image: "https://randomuser.me/api/portraits/women/68.jpg",
+    text: "Je recommande cette application à mes clients pour sa large sélection d'électroménager encastrable de grande marque. Le SAV est extrêmement réactif et la garantie constructeur est clairement détaillée, ce qui est très rassurant.",
+    rating: 5,
+    verified: true,
+  },
+  {
+    _id: 4,
+    name: "jean kengne",
+    role: "Gérant de Resto-Café",
+    image: "https://randomuser.me/api/portraits/men/45.jpg",
+    text: "Pour renouveler les micro-ondes et les machines à café professionnelles de mon établissement, je passe uniquement par ici. Les options de paiement sont flexibles, les factures sont claires et la livraison respecte toujours les délais annoncés.",
+    rating: 5,
+    verified: true,
+  },
+];
 
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(0);
