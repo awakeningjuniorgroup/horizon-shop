@@ -102,7 +102,7 @@ const Footer = () => {
                   />
                 </div>
                 <span className="mt-1.5 group-hover:text-emerald-600 transition-colors">
-                  +237 666666666
+                  +237 690 31 63 94
                 </span>
               </li>
               <li className="flex items-start gap-3 text-slate-500 text-sm font-medium group cursor-pointer">
