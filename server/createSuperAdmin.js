@@ -4,7 +4,7 @@ import User from './models/User.js';
 const createSuperAdmin = async () => {
   try {
     // 1. Connect
-    const mongoURI = "mongodb+srv://awakeningjuniorgroup_db_user:2NkBb67AOJLdvbFS@kuakumarket.0qyzfx1.mongodb.net/?appName=kuakumarket";
+    const mongoURI = process.env.MONGODB_URI; // <-- Change this if needed";
     console.log('🔌 Connecting to MongoDB...');
     await mongoose.connect(mongoURI);
     console.log('✅ Connected');
@@ -12,7 +12,7 @@ const createSuperAdmin = async () => {
     // 2. Create User with PLAIN TEXT password
     // Your User model will automatically hash this!
     const superAdmin = new User({
-      name: 'Parth Shah',
+      name: 'awakening junior group',
       email: 'awakeningjuniorgroup@gmail.com',
       password: '@pa12!&Ter', // <--- sending plain text now
       role: 'superadmin',

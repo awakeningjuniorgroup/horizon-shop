@@ -9,7 +9,7 @@ const resetAndCreateSuperAdminWithClerk = async () => {
     
     // 1. Connect to MongoDB
     console.log('1️⃣ Connecting to MongoDB...');
-    const mongoURI = process.env.MONGO_URI ;
+    const mongoURI = process.env.MONGODB_URI ;
     await mongoose.connect(mongoURI);
     console.log('✅ MongoDB Connected!\n');
 
